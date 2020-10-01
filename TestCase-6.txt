@@ -1,0 +1,64 @@
+package ZSELDEMO3.ZSELDEMO3;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.TestListenerAdapter;
+import org.testng.TestNG;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+	WebDriver driver;
+	  @BeforeTest
+	  public  void beforetest()
+	  {
+		 // System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome Beta\\Application\\chromedriver.exe");
+		  System.setProperty("webdriver.chrome.driver", "/home/ubuntu/Chromedriver");
+		  ChromeOptions options = new ChromeOptions();
+		  options.addArguments("--headless");
+		  driver = new ChromeDriver(options);
+	  }
+	  
+	  @BeforeMethod
+	  public void open()
+	  {
+		  driver.get("https://www.google.com/");
+		  System.out.println("Trying to Test Naukri Website");
+	  }
+	  @Test
+	  public void test()
+	  {
+		  System.out.println("googling naukri website.");
+		  driver.findElement(By.xpath("//input[@name='q']")).sendKeys("naukri job portal");
+		  driver.findElement(By.xpath("//div[@class='FPdoLc tfB0Bf']//input[@name='btnK']")).submit();
+		  System.out.println("Opening naukri website.");
+		  driver.findElement(By.xpath("//h3[contains(text(),'Naukri.com: Jobs - Recruitment - Job Search - Empl')]")).click();
+		  System.out.println("Searching by skills and location.");
+		  driver.findElement(By.xpath("//input[@id='qsb-keyword-sugg']")).sendKeys("devops");
+		  driver.findElement(By.xpath("//input[@id='qsb-location-sugg']")).sendKeys("hyderabad");
+		  driver.findElement(By.xpath("//button[contains(text(),'Search')]")).click();;
+		  
+	  }
+	  @AfterMethod
+	public void quit()
+	{
+		driver.quit();
+	}
+	  public static void main(String[] args)
+	  {
+		  TestListenerAdapter tla=new TestListenerAdapter();
+		  TestNG testing = new TestNG();
+		  testing.setTestClasses(new Class[] {App.class});
+		  testing.addListener(tla);
+		  testing.run();
+	  }
+}
